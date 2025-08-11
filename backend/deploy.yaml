@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: library-app
+  labels:
+    app: library-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: library-app
+  template:
+    metadata:
+      labels:
+        app: library-app
+    spec:
+      containers:
+        - name: library-app
+          image: harshavardhan303/library-manager-backend:8
+          envFrom:
+            - secretRef:
+               name: library-secrets
+          ports:
+            - containerPort: 8080
+

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: library-app
-          image: harshavardhan303/library-manager-backend:1
+          image: harshavardhan303/library-manager-backend:12
           envFrom:
             - secretRef:
                name: library-secrets

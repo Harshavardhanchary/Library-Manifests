@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: mysql
-          image: harshavardhan303/library-manager-db:2
+          image: harshavardhan303/library-manager-db:1
           envFrom:
             - secretRef:
                name: library-secrets

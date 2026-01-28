@@ -5,21 +5,57 @@ metadata:
   labels:
     app: library-app
 spec:
-  replicas: 1
+  replicas: 2
+  revisionHistoryLimit: 5
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+
   selector:
     matchLabels:
       app: library-app
+
   template:
     metadata:
       labels:
         app: library-app
     spec:
+      terminationGracePeriodSeconds: 30
+
       containers:
         - name: library-app
           image: harshavardhan303/library-manager-backend:1
-          envFrom:
-            - secretRef:
-               name: library-secrets
+          imagePullPolicy: IfNotPresent
+
           ports:
             - containerPort: 8080
 
+          envFrom:
+            - secretRef:
+                name: library-secrets
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "512Mi"
+            limits:
+              cpu: "300m"
+              memory: "1Gi"
+          readinessProbe:
+            httpGet:
+              path: /Homepage.jsp
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 5
+
+          livenessProbe:
+            httpGet:
+              path: /Homepage.jsp
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            failureThreshold: 5

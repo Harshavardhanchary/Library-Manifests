@@ -4,7 +4,9 @@ metadata:
   name: library-manager-ingress
   namespace: default
   annotations:
-    kubernetes.io/ingress.class: traefik
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
 spec:
   rules:
     - host: harshavardhan.space
@@ -14,7 +16,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: library-app  # Change to your Service name
+                name: library-app
                 port:
                   number: 80
 
